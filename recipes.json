@@ -1,0 +1,26 @@
+[
+    {
+        "name": "pastha",
+        "ingredients": [
+            "pastha",
+            "garlic",
+            "tomato",
+            "salt",
+            "pepper"
+        ],
+        "instructions": "boil pastha,add dhal to it .mix and serve",
+        "category": "italian"
+    },
+    {
+        "name": "pastha",
+        "ingredients": [
+            "pastha",
+            "garlic",
+            "tomato",
+            "salt",
+            "pepper"
+        ],
+        "instructions": "boil pastha,add dhal to it .mix and serve",
+        "category": "italian"
+    }
+]

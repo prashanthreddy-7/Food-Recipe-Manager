@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recipe Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #dc3545;
+        }
+        input, select, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        async function addRecipe() {
+            const name = document.getElementById("name").value;
+            const ingredients = document.getElementById("ingredients").value.split(",");
+            const instructions = document.getElementById("instructions").value;
+            const category = document.getElementById("category").value;
+            
+            const response = await fetch("/add_recipe", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, ingredients, instructions, category })
+            });
+            
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function searchRecipe() {
+            const type = document.getElementById("searchType").value;
+            const query = document.getElementById("searchQuery").value;
+            
+            const response = await fetch(`/search_recipe?type=${type}&query=${query}`);
+            const recipes = await response.json();
+            
+            let output = "<h2>Search Results</h2>";
+            if (recipes.length === 0) {
+                output += "<p>No recipes found.</p>";
+            } else {
+                recipes.forEach(recipe => {
+                    output += `<p><strong style='color:#dc3545;'>${recipe.name}</strong> - ${recipe.category}<br><strong>Ingredients:</strong> ${recipe.ingredients.join(", ")}<br><strong>Instructions:</strong> ${recipe.instructions}</p>`;
+                });
+            }
+            document.getElementById("results").innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1>Food Recipe Manager</h1>
+    
+    <h2>Add Recipe</h2>
+    <input type="text" id="name" placeholder="Recipe Name"><br>
+    <input type="text" id="ingredients" placeholder="Ingredients (comma-separated)"><br>
+    <input type="text" id="instructions" placeholder="Instructions"><br>
+    <input type="text" id="category" placeholder="Category"><br>
+    <button onclick="addRecipe()">Add Recipe</button>
+    
+    <h2>Search Recipe</h2>
+    <select id="searchType">
+        <option value="ingredient">Ingredient</option>
+        <option value="category">Category</option>
+    </select>
+    <input type="text" id="searchQuery" placeholder="Search Query">
+    <button onclick="searchRecipe()">Search</button>
+    
+    <div id="results"></div>
+</body>
+</html>
